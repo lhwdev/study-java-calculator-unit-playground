@@ -2,7 +2,7 @@ package calculator;
 
 public class StringCalculator {
 	private final String expression;
-	private int offset = 0;
+	private int index = 0;
 	private String[] separators = {",", ":"};
 	
 	public StringCalculator(String expression) {
@@ -11,7 +11,7 @@ public class StringCalculator {
 	
 	
 	public int executeSum() {
-		if(offset != 0) throw new RuntimeException("execute는 한번만 호출해주세요!");
+		if(index != 0) throw new RuntimeException("execute는 한번만 호출해주세요!");
 		
 		int result = 0;
 		
@@ -23,7 +23,7 @@ public class StringCalculator {
 			throw new RuntimeException("올바른 숫자를 입력해주세요.");
 		result += output;
 		
-		while(offset < expression.length()) {
+		while(index < expression.length()) {
 			if(parseSeparator() == null)
 				throw new RuntimeException("숫자 뒤에는 구분자가 와야 합니다.");
 			if((output = parseInteger()) == null)
@@ -40,20 +40,20 @@ public class StringCalculator {
 	private String parseSeparatorInput() {
 		String separatorPrefix = "//";
 		String separatorSuffix = "\n";
-		if(!expression.startsWith(separatorPrefix, offset)) return null;
+		if(!expression.startsWith(separatorPrefix, index)) return null;
 		
-		int separatorEnd = expression.indexOf(separatorSuffix, offset);
+		int separatorEnd = expression.indexOf(separatorSuffix, index);
 		if(separatorEnd == -1)
 			throw new RuntimeException("구분자 입력 형식이 잘못되었습니다. //과 \\n 사이에 구분자를 넣어주세요.");
 		
-		return expression.substring(offset + separatorPrefix.length(), separatorEnd);
+		return expression.substring(index + separatorPrefix.length(), separatorEnd);
 	}
 	
 	private String parseSeparator() {
 		for(String separator : separators) {
-			if(!expression.startsWith(separator, offset)) continue;
+			if(!expression.startsWith(separator, index)) continue;
 			
-			offset += separator.length();
+			index += separator.length();
 			return separator;
 		}
 		
@@ -61,26 +61,26 @@ public class StringCalculator {
 	}
 	
 	private Integer parseInteger() {
-		int startOffset = offset;
-		if(startOffset >= expression.length())
+		int startIndex = index;
+		if(startIndex >= expression.length())
 			throw new RuntimeException("숫자를 예상했지만 표현식이 끝났습니다...");
 		
-		char first = expression.charAt(startOffset);
+		char first = expression.charAt(startIndex);
 		if(!isDigit(first)) {
 			if(first == '-') throw new RuntimeException("음수는 지원되지 않습니다.");
 			return null;
 		}
 		
-		offset++;
+		index++;
 		
-		while(offset < expression.length()) {
-			char current = expression.charAt(offset);
-			if(isDigit(current)) offset++;
+		while(index < expression.length()) {
+			char current = expression.charAt(index);
+			if(isDigit(current)) index++;
 			else break;
 		}
 		
 		try {
-			return Integer.parseInt(expression.substring(startOffset, offset));
+			return Integer.parseInt(expression.substring(startIndex, index));
 		} catch(NumberFormatException e) {
 			throw new RuntimeException("올바르지 않은 숫자입니다.", e);
 		}
