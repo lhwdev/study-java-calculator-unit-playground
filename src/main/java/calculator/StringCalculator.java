@@ -1,16 +1,16 @@
 package calculator;
 
 public class StringCalculator {
-	String expression;
-	int offset = 0;
-	String[] separators = {",", ":"};
+	private final String expression;
+	private int offset = 0;
+	private String[] separators = {",", ":"};
 	
-	StringCalculator(String expression) {
+	public StringCalculator(String expression) {
 		this.expression = expression;
 	}
 	
 	
-	int executeSum() {
+	public int executeSum() {
 		if(offset != 0) throw new RuntimeException("execute는 한번만 호출해주세요!");
 		
 		int result = 0;
@@ -35,7 +35,7 @@ public class StringCalculator {
 	
 	/// 파서
 	
-	void parseSeparatorInput() {
+	private void parseSeparatorInput() {
 		String separatorPrefix = "//";
 		String separatorSuffix = "\n";
 		if(!expression.startsWith(separatorPrefix, offset)) return;
@@ -49,7 +49,7 @@ public class StringCalculator {
 		offset = separatorEnd + separatorSuffix.length();
 	}
 	
-	String parseSeparator() {
+	private String parseSeparator() {
 		for(String separator : separators) {
 			if(!expression.startsWith(separator, offset)) continue;
 			
@@ -60,7 +60,7 @@ public class StringCalculator {
 		return null;
 	}
 	
-	Integer parseInteger() {
+	private Integer parseInteger() {
 		int startOffset = offset;
 		if(startOffset >= expression.length())
 			throw new RuntimeException("숫자를 예상했지만 표현식이 끝났습니다...");
