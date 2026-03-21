@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("계산기")
 public class CalculatorTest {
@@ -28,7 +28,7 @@ public class CalculatorTest {
 			int result = calculator.add(a, b);
 			
 			// then
-			assertEquals(result, a + b);
+			assertThat(result).isEqualTo(a + b);
 		}
 		
 		@DisplayName("인자 두 개를 받아서 뺸 값을 반환한다.")
@@ -42,7 +42,7 @@ public class CalculatorTest {
 			int result = calculator.subtract(a, b);
 			
 			// then
-			assertEquals(result, a - b);
+			assertThat(result).isEqualTo(a - b);
 		}
 		
 		@DisplayName("인자 두 개를 받아서 곱한 값을 반환한다.")
@@ -56,7 +56,7 @@ public class CalculatorTest {
 			int result = calculator.multiply(a, b);
 			
 			// then
-			assertEquals(result, a * b);
+			assertThat(result).isEqualTo(a * b);
 		}
 		
 		@DisplayName("인자 두 개를 받아서 나눈 값을 반환한다.")
@@ -72,7 +72,7 @@ public class CalculatorTest {
 			int result = calculator.divide(a, b);
 			
 			// then
-			assertEquals(result, a / b);
+			assertThat(result).isEqualTo(a / b);
 		}
 		
 		private static Stream<Arguments> binaryArguments() {
