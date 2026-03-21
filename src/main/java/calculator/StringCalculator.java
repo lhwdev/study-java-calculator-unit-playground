@@ -14,7 +14,9 @@ public class StringCalculator {
 		if(offset != 0) throw new RuntimeException("execute는 한번만 호출해주세요!");
 		
 		int result = 0;
-		parseSeparatorInput();
+		
+		String separator = parseSeparatorInput();
+		if(separator != null) separators = new String[] {separator};
 		
 		Integer output;
 		if((output = parseInteger()) == null)
@@ -35,18 +37,16 @@ public class StringCalculator {
 	
 	/// 파서
 	
-	private void parseSeparatorInput() {
+	private String parseSeparatorInput() {
 		String separatorPrefix = "//";
 		String separatorSuffix = "\n";
-		if(!expression.startsWith(separatorPrefix, offset)) return;
+		if(!expression.startsWith(separatorPrefix, offset)) return null;
 		
 		int separatorEnd = expression.indexOf(separatorSuffix, offset);
 		if(separatorEnd == -1)
 			throw new RuntimeException("구분자 입력 형식이 잘못되었습니다. //과 \\n 사이에 구분자를 넣어주세요.");
 		
-		String separator = expression.substring(offset + separatorPrefix.length(), separatorEnd);
-		separators = new String[] {separator};
-		offset = separatorEnd + separatorSuffix.length();
+		return expression.substring(offset + separatorPrefix.length(), separatorEnd);
 	}
 	
 	private String parseSeparator() {
